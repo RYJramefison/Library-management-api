@@ -4,7 +4,8 @@ info:
   description: API for book management
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: 'https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-api/1.0.0'
+    description: SwaggerHub API Auto Mocking
 paths:
   /books:
     get:
@@ -12,41 +13,95 @@ paths:
       parameters:
         - name: bookName
           in: query
-          required: false
           description: Filter by book name
+          required: false
+          style: form
+          explode: true
           schema:
             type: string
         - name: releaseDate
           in: query
-          required: false
           description: Filter by release date range
+          required: false
+          style: form
+          explode: true
           schema:
             type: string
             format: date
       responses:
-        '200':
+        "200":
           description: A list of books
     post:
       summary: Add a new book
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                bookName:
-                  type: string
-                author:
-                  type: string
-                pageNumbers:
-                  type: integer
-                topic:
-                  type: string
-                  enum: [ROMANCE, COMEDY, OTHER]
-                releaseDate:
-                  type: string
-                  format: date
+              $ref: '#/components/schemas/books_body_1'
+        required: true
       responses:
-        '201':
+        "201":
           description: Book created
+    put:
+      summary: Update a book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/books_body'
+        required: true
+      responses:
+        "200":
+          description: Book updated
+    delete:
+      summary: Delete a book
+      parameters:
+        - name: id
+          in: path
+          description: ID of the book to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Book deleted
+components:
+  schemas:
+    books_body:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum:
+            - ROMANCE
+            - COMEDY
+            - OTHER
+        releaseDate:
+          type: string
+          format: date
+    books_body_1:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum:
+            - ROMANCE
+            - COMEDY
+            - OTHER
+        releaseDate:
+          type: string
+          format: date
