@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: Authors Management
+  description: API for authors management
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
