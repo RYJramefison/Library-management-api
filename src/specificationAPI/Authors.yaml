@@ -4,7 +4,8 @@ info:
   description: API for authors management
   version: 1.0.0
 servers:
-  - url: 'https'
+  - url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-author-api/1.0.0
+    description: SwaggerHub API Auto Mocking
 paths:
   /authors:
     get:
@@ -12,27 +13,70 @@ paths:
       parameters:
         - name: authorName
           in: query
-          required: false
           description: Filter by author name
+          required: false
+          style: form
+          explode: true
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: A list of authors
-    post:
-      summary: Add a new author
+    put:
+      summary: Update an author
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                sex:
-                  type: string
-                  enum: [M, F]
+              $ref: '#/components/schemas/authors_body'
+        required: true
       responses:
-        '201':
+        "200":
+          description: Author updated
+    post:
+      summary: Add a new author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authors_body_1'
+        required: true
+      responses:
+        "201":
           description: Author created
+    delete:
+      summary: Delete an author
+      parameters:
+        - name: id
+          in: path
+          description: ID of the author to delete
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Author deleted
+components:
+  schemas:
+    authors_body:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+          enum:
+            - M
+            - F
+    authors_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+          enum:
+            - M
+            - F
