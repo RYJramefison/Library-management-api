@@ -26,4 +26,27 @@ paths:
       responses:
         '200':
           description: A list of books
-  
+    post:
+      summary: Add a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bookName:
+                  type: string
+                author:
+                  type: string
+                pageNumbers:
+                  type: integer
+                topic:
+                  type: string
+                  enum: [ROMANCE, COMEDY, OTHER]
+                releaseDate:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: Book created
