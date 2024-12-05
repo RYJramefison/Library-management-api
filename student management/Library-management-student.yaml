@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: Student Management
+  description: API for Student management
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Student-management-api/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-Student-api/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /authors:
+    get:
+      summary: Get a list of student
+      parameters:
+      - name: StudentName
+        in: query
+        description: Filter by student name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: A list of student
+    put:
+      summary: Update an student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student_body'
+        required: true
+      responses:
+        "200":
+          description: Student updated
+    post:
+      summary: Add a new student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student_body_1'
+        required: true
+      responses:
+        "201":
+          description: Student created
+    delete:
+      summary: Delete an Student
+      parameters:
+      - name: id
+        in: query
+        description: ID of the Student to delete
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: Student deleted
+components:
+  schemas:
+    Student_body:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+          enum:
+          - M
+          - F
+        birthdate:
+          type: string
+          format: date
+        reference:
+          type: string
+        group:
+          type: string
+    Student_body_1:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+          enum:
+          - M
+          - F
+        birthdate:
+          type: string
+          format: date
+        reference:
+          type: string
+        group:
+          type: string
