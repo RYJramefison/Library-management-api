@@ -1,19 +1,91 @@
-openapi: 3.0.3
+openapi: 3.0.0
 info:
-  title: Student Management
-  description: API for Student management
-  version: 1.0.0
+  title: Student Course Management API
+  description: API for managing groups and students in the context of course management.
+  version: x.x.x
 servers:
-- url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Student-management-api/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-Student-api/1.0.0
+- url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Student-management-api/x.x.x
   description: SwaggerHub API Auto Mocking
 paths:
-  /authors:
+  /groups:
     get:
-      summary: Get a list of student
+      summary: Retrieve the list of groups
       parameters:
-      - name: StudentName
+      - name: groupName
+        in: query
+        description: Filter by group name
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: groupYear
+        in: query
+        description: Filter by group year (date range)
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: date
+      responses:
+        "200":
+          description: Successfully retrieved the list of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    put:
+      summary: Update an existing group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        "200":
+          description: Group updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    post:
+      summary: Create a new group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        "201":
+          description: Group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+    delete:
+      summary: Delete a group
+      parameters:
+      - name: id
+        in: query
+        description: ID of the group to delete
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Group deleted successfully
+  /students:
+    get:
+      summary: Retrieve the list of students
+      parameters:
+      - name: studentName
         in: query
         description: Filter by student name
         required: false
@@ -23,65 +95,87 @@ paths:
           type: string
       responses:
         "200":
-          description: A list of student
+          description: Successfully retrieved the list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
     put:
-      summary: Update an student
+      summary: Update an existing student
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Student_body'
+              $ref: '#/components/schemas/Student'
         required: true
       responses:
         "200":
-          description: Student updated
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
     post:
-      summary: Add a new student
+      summary: Create a new student
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Student_body_1'
+              $ref: '#/components/schemas/Student'
         required: true
       responses:
         "201":
-          description: Student created
+          description: Student created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
     delete:
-      summary: Delete an Student
+      summary: Delete a student
       parameters:
       - name: id
         in: query
-        description: ID of the Student to delete
+        description: ID of the student to delete
         required: true
         style: form
         explode: true
         schema:
-          type: integer
+          type: string
       responses:
         "204":
-          description: Student deleted
+          description: Student deleted successfully
 components:
   schemas:
-    Student_body:
+    Group:
       type: object
       properties:
-        name:
+        id:
           type: string
-        sex:
+        groupName:
           type: string
-          enum:
-          - M
-          - F
-        birthdate:
+        groupYear:
           type: string
           format: date
-        reference:
+        promotion:
           type: string
-        group:
-          type: string
-    Student_body_1:
+          enum:
+          - G
+          - H
+          - J
+          - K
+        studentNb:
+          type: integer
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+    Student:
       type: object
       properties:
+        id:
+          type: string
         name:
           type: string
         sex:
