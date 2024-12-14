@@ -1,0 +1,217 @@
+openapi: 3.0.3
+info:
+  title: Gestion de Bibliothèque API
+  version: 1.1.0
+  description: API pour la gestion des livres et des auteurs.
+
+paths:
+  /books:
+    get:
+      summary: Récupérer la liste des livres
+      parameters:
+        - name: bookName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: releaseDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Liste des livres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+    post:
+      summary: Créer un nouveau livre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudUpdateBook'
+      responses:
+        '201':
+          description: Livre créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+    put:
+      summary: Mettre à jour un livre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrudUpdateBook'
+      responses:
+        '200':
+          description: Livre mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+    delete:
+      summary: Supprimer un livre
+      parameters:
+        - name: bookId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Livre supprimé
+
+  /books/{bookId}/authors/{authorId}:
+    put:
+      summary: Modifier l'auteur d'un livre
+      responses:
+        '204':
+          description: Auteur modifié
+
+  /books/authors:
+    put:
+      summary: Mettre à jour l'auteur d'une liste de livres
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UpdateBookAuthor'
+      responses:
+        '204':
+          description: Auteurs mis à jour
+
+  /authors:
+    get:
+      summary: Récupérer la liste des auteurs
+      parameters:
+        - name: authorName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Liste des auteurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+
+    put:
+      summary: Mettre à jour un auteur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Auteur mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        bookName:
+          type: string
+        author:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum: [ROMANCE, COMEDY, OTHER]
+        releaseDate:
+          type: string
+          format: date
+
+    CrudUpdateBook:
+      type: object
+      properties:
+        id:
+          type: string
+        bookName:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum: [ROMANCE, COMEDY, OTHER]
+        releaseDate:
+          type: string
+          format: date
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sex:
+          type: string
+          enum: [M, F]
+
+    UpdateBookAuthor:
+      type: object
+      properties:
+        bookId:
+          type: string
+        authorId:
+          type: string

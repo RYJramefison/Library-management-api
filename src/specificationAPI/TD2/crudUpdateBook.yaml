@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: Book and Author Management API
+  version: 1.0.0
+  description: API for managing books and authors.
+paths:
+  /books:
+    get:
+      summary: Retrieve the list of books
+      parameters:
+        - name: bookName
+          in: query
+          description: Filter by book name
+          required: false
+          schema:
+            type: string
+        - name: releaseDate
+          in: query
+          description: Filter by release date (date range)
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successfully retrieved the list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+    put:
+      summary: Update an existing book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+    delete:
+      summary: Delete a book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the book to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Book deleted successfully
+
+  /authors:
+    get:
+      summary: Retrieve the list of authors
+      parameters:
+        - name: authorName
+          in: query
+          description: Filter by author name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the list of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+
+    post:
+      summary: Create a new author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '201':
+          description: Author created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+    put:
+      summary: Update an existing author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        '200':
+          description: Author updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+    delete:
+      summary: Delete an author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the author to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Author deleted successfully
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum: [ ROMANCE, COMEDY, OTHER ]
+        releaseDate:
+          type: string
+          format: date
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+    CrudUpdateBook:
+      type: object
+      properties:
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum: [ ROMANCE, COMEDY, OTHER ]
+        releaseDate:
+          type: string
+          format: date
+    Author:
+      type: object
+      properties:
+        name:
+          type: string
+        sex:
+          type: string
+          enum: [ M, F ]

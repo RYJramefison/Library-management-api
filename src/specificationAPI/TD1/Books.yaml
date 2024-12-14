@@ -14,17 +14,13 @@ paths:
         - name: bookName
           in: query
           description: Filter by book name
-          required: false
           style: form
-          explode: true
           schema:
             type: string
         - name: releaseDate
           in: query
           description: Filter by release date range
-          required: false
           style: form
-          explode: true
           schema:
             type: string
             format: date
@@ -61,7 +57,6 @@ paths:
           description: ID of the book to delete
           required: true
           style: simple
-          explode: false
           schema:
             type: integer
       responses:

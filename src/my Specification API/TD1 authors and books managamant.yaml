@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: authors and books management
+  description: specification API for authors and books management
+  version: 1.0.0
+servers:
+  - url: 'https/STD23073/authors-books-management'
+paths:
+  /books:
+    get:
+      summary: Retrieve list of books
+      parameters:
+        - name: bookName
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: releaseDate
+          in: query
+          required: false
+          style: form
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: list of books retrieved successfully
+
+    post:
+      summary: Created new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        201:
+          description: book created successfully
+
+    put:
+      summary: Update book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        202:
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+
+    delete:
+      summary: delete book
+      parameters:
+        - name: ID
+          in: query
+          required: true
+          description: delete book by id
+          style: form
+          schema:
+            type: integer
+      responses:
+        204:
+          description: book deleted successfully
+
+  /authors:
+    get:
+      summary: retrieve list of authors
+      parameters:
+        - name: authorName
+          in: query
+          description: retrieve author(s) by name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: student(s) retrieved successfully
+
+    post:
+      summary: add new author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        201:
+          description: author added successfully
+
+    put:
+      summary: Update author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Author'
+      responses:
+        202:
+          description: author updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+
+    delete:
+      summary: delete author
+      parameters:
+        - name: ID
+          in: query
+          description: delete author by id
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Author deleted successfully
+
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        ID:
+          type: integer
+        bookName:
+          type: string
+        author:
+          type: string
+        pageNumbers:
+          type: integer
+        topics:
+          type: string
+          enum: [ROMANCE, COMEDY, OTHER]
+        releaseDate:
+          type: string
+          format: date
+
+    Author:
+      type: object
+      properties:
+        ID:
+          type: string
+        name:
+          type: string
+        Sex:
+          type: string
+          enum: [M,F]
+

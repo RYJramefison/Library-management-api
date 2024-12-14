@@ -1,0 +1,171 @@
+openapi: 3.0.3
+info:
+  title: course and student management
+  description: specification API for course and student management
+  version: 1.0.0
+servers:
+  - url: 'https/STD23073/Course-student-management'
+paths:
+  /groups:
+    get:
+      summary: retrieve one group
+      parameters:
+        - name: groupName
+          in: path
+          description: get groups by group name
+          required: false
+          style: form
+          schema:
+            type: string
+        - name: groupYear
+          in: query
+          description: get group(s) by year
+          style: form
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: successfully retrieved groups
+
+    post:
+      summary: create new group
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+      responses:
+        "201":
+          description: group created successfully
+
+    put:
+      summary: Update one group existing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "202":
+          description: group Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+
+    delete:
+      summary: delete an existing group
+      parameters:
+        - name: Id
+          in: query
+          required: true
+          description: delete one group by id
+          schema:
+            type: string
+      responses:
+        204:
+          description: group deleted successfully
+
+  /students:
+    get:
+      summary: retrieve student
+      parameters:
+        - name: studentName
+          in: query
+          description: get student by name
+          required: false
+          style: form
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successfully retrieved student(s)
+
+    post:
+      summary: Add new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        201:
+          description: student created
+
+    put:
+      summary: Update student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        202:
+          description: student updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+
+    delete:
+      summary: delete student
+      parameters:
+        - name: ID
+          required: true
+          in: query
+          description: delete student by id
+          schema:
+            type: string
+      responses:
+        204:
+          description: student deleted successfully
+
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        ID:
+          type: string
+        groupName:
+          type: string
+          example: J2
+        groupYear:
+          type: string
+          format: date
+        promotion:
+          type: string
+          enum: [G,H,J,K]
+        studentNb:
+          type: integer
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+
+    Student:
+      type: object
+      properties:
+        ID:
+          type: string
+        Name:
+          type: string
+        Sex:
+          type: string
+          enum: [ M, F ]
+        birthdate:
+          type: string
+          format: date
+        reference:
+          type: string
+        group:
+          type: string
+
+
+
+  

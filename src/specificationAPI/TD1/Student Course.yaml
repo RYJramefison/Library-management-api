@@ -1,0 +1,183 @@
+openapi: 3.0.0
+info:
+  title: Student Course Management API
+  version: x.x.x
+  description: API for managing groups and students in the context of course management.
+
+paths:
+  /groups:
+    get:
+      summary: Retrieve the list of groups
+      parameters:
+        - name: groupName
+          in: query
+          description: Filter by group name
+          required: false
+          schema:
+            type: string
+        - name: groupYear
+          in: query
+          description: Filter by group year (date range)
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successfully retrieved the list of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+
+    post:
+      summary: Create a new group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          description: Group created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+
+    put:
+      summary: Update an existing group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '200':
+          description: Group updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+
+    delete:
+      summary: Delete a group
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the group to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Group deleted successfully
+
+  /students:
+    get:
+      summary: Retrieve the list of students
+      parameters:
+        - name: studentName
+          in: query
+          description: Filter by student name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the list of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+
+    post:
+      summary: Create a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '201':
+          description: Student created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+
+    put:
+      summary: Update an existing student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+
+    delete:
+      summary: Delete a student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the student to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Student deleted successfully
+
+components:
+  schemas:
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        groupName:
+          type: string
+        groupYear:
+          type: string
+          format: date
+        promotion:
+          type: string
+          enum: [G, H, J, K]
+        studentNb:
+          type: integer
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/Student'
+
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sex:
+          type: string
+          enum: [M, F]
+        birthdate:
+          type: string
+          format: date
+        reference:
+          type: string
+        group:
+          type: string

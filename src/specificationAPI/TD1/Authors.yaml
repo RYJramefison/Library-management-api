@@ -1,10 +1,10 @@
-openapi: 3.0.3
+²openapi: 3.0.3
 info:
   title: Authors Management
   description: API for authors management
   version: 1.0.0
 servers:
-  - url: https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-author-api/1.0.0
+  - url: 'https://virtserver.swaggerhub.com/HEIJUNINHO2/Library-management-author-api/1.0.0'
     description: SwaggerHub API Auto Mocking
 paths:
   /authors:
@@ -16,7 +16,6 @@ paths:
           description: Filter by author name
           required: false
           style: form
-          explode: true
           schema:
             type: string
       responses:
@@ -44,6 +43,7 @@ paths:
       responses:
         "201":
           description: Author created
+
     delete:
       summary: Delete an author
       parameters:
